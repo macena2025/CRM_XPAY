@@ -1,0 +1,1557 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CRM Adquirência • Demo</title>
+<style>
+
+:root{--bg:#0b1220;--panel:#0f172a;--card:#111f3a;--b:rgba(255,255,255,.09);--t:rgba(255,255,255,.92);--m:rgba(255,255,255,.65);--a:#24d18f;--a2:#16a34a;--r:16px}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--t);background:radial-gradient(900px 520px at 15% 0%, rgba(36,209,143,.18), transparent 55%),radial-gradient(900px 520px at 100% 0%, rgba(22,163,74,.12), transparent 45%),var(--bg)}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:16px 12px;border-right:1px solid var(--b);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01))}
+.brand{display:flex;gap:10px;align-items:center;padding:10px;border-radius:14px}
+.logo{width:38px;height:38px;border-radius:14px;background:radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.85), rgba(255,255,255,0) 60%),linear-gradient(135deg,var(--a),var(--a2));box-shadow:0 12px 30px rgba(36,209,143,.22)}
+.brand b{display:block;font-size:13px} .brand small{display:block;margin-top:2px;color:var(--m);font-size:12px}
+.nav{margin-top:10px;display:flex;flex-direction:column;gap:6px;padding:6px}
+.nav button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:14px;background:transparent;border:1px solid transparent;color:var(--t);cursor:pointer;transition:.15s}
+.nav button:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.06)}
+.nav button.active{background:linear-gradient(180deg,rgba(36,209,143,.22),rgba(36,209,143,.08));border-color:rgba(36,209,143,.38)}
+.left{display:flex;align-items:center;gap:10px}.ico{width:32px;height:32px;border-radius:12px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}
+.pill{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:rgba(255,255,255,.88)}
+.box{margin-top:12px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}.box p{margin:6px 0 0;color:var(--m);font-size:12px;line-height:1.4}
+.main{padding:20px 20px 26px}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.title h1{margin:0;font-size:20px}.title p{margin:6px 0 0;color:var(--m);font-size:13px;max-width:90ch}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+.ctrl{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.ctrl label{font-size:12px;color:var(--m)} .ctrl input,.ctrl select{background:transparent;border:0;outline:none;color:var(--t);font-size:12px;min-width:130px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;cursor:pointer;border:1px solid rgba(36,209,143,.36);background:linear-gradient(180deg,rgba(36,209,143,.30),rgba(36,209,143,.10));color:rgba(255,255,255,.95);font-size:12px;transition:.15s}
+.btn:hover{transform:translateY(-1px)} .btn.ghost{border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.03)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.card{border-radius:var(--r);border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));padding:14px}
+.kpi h3{margin:0;font-size:12px;color:var(--m)}.kpi .v{margin-top:6px;font-size:22px;font-weight:800}
+.badge{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05)}
+.badge.good{border-color:rgba(34,197,94,.40);background:rgba(34,197,94,.12);color:rgba(167,243,208,.95)}
+.badge.warn{border-color:rgba(245,158,11,.40);background:rgba(245,158,11,.10);color:rgba(253,230,138,.95)}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:12px;margin-top:12px;align-items:start}
+.section h2{margin:0;font-size:13px}.meta{margin:6px 0 0;color:var(--m);font-size:12px}
+svg{width:100%;height:260px;display:block;border-radius:14px;border:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01))}
+.table{overflow:auto;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:960px}
+th{position:sticky;top:0;background:rgba(15,23,42,.85);backdrop-filter:blur(8px);text-align:left;font-size:12px;color:rgba(255,255,255,.82);padding:12px;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;white-space:nowrap}
+td{padding:12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
+tr:hover td{background:rgba(255,255,255,.03)}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04)}
+.dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.45)}
+.status.good{border-color:rgba(34,197,94,.40);background:rgba(34,197,94,.10)}.status.good .dot{background:#22c55e}
+.status.warn{border-color:rgba(245,158,11,.40);background:rgba(245,158,11,.10)}.status.warn .dot{background:#f59e0b}
+.kanban{display:grid;grid-template-columns:repeat(5,minmax(230px,1fr));gap:12px;overflow:auto;padding-bottom:6px}
+.col{min-width:230px;border-radius:var(--r);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);overflow:hidden}
+.colhead{padding:12px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+.drop{padding:10px;min-height:360px}
+.deal{padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);margin-bottom:10px;cursor:grab}
+.deal b{display:block;font-size:12px}.deal small{display:block;color:var(--m);font-size:12px;margin-top:4px;line-height:1.35}
+.deal .row{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:12px}
+.tag{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:rgba(255,255,255,.86)}
+.page{display:none}.page.active{display:block}
+.modalBack{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);padding:16px}
+.modalBack.show{display:grid}
+.modal{width:min(920px,96vw);border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(15,23,42,.94);backdrop-filter:blur(10px);overflow:hidden}
+.mhead{padding:14px;display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.mbody{padding:14px;display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+.mcard{border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);padding:12px}
+.mcard h4{margin:0;font-size:12px}
+.kv{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field label{display:block;font-size:12px;color:var(--m);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:10px;color:var(--t);outline:none;font-size:12px}
+.field textarea{min-height:90px;resize:vertical}
+.rowbtn{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+@media(max-width:1100px){.app{grid-template-columns:92px 1fr}.brand .txt{display:none}.left span{display:none}.box{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.mbody{grid-template-columns:1fr}}
+@media(max-width:560px){.kpis{grid-template-columns:1fr}.main{padding:16px}}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+<aside class="side">
+  <div class="brand"><div class="logo"></div><div class="txt"><b>CRM Adquirência</b><small>Demo local (mock)</small></div></div>
+  <nav class="nav">
+    <button class="active" data-page="home"><div class="left"><div class="ico">📊</div><span>Visão geral</span></div><span class="pill" id="pillPeriod">—</span></button>
+    <button data-page="leads"><div class="left"><div class="ico">🧲</div><span>Leads</span></div><span class="pill" id="pillLeads">—</span></button>
+    <button data-page="pipeline"><div class="left"><div class="ico">🧩</div><span>Pipeline</span></div><span class="pill">Kanban</span></button>
+    <button data-page="propostas"><div class="left"><div class="ico">🧾</div><span>Propostas</span></div><span class="pill">Taxas</span></button>
+    <button data-page="tarefas"><div class="left"><div class="ico">✅</div><span>Tarefas</span></div><span class="pill" id="pillTasks">—</span></button>
+</nav>
+  <div class="box"><b>Como usar</b><p>1) Crie um lead.<br/>2) Arraste no pipeline.<br/>3) Abra um negócio para simular proposta.</p></div>
+</aside>
+
+<main class="main">
+  <div class="top">
+    <div class="title"><h1 id="pageTitle">Visão geral</h1><p id="pageDesc">CRM focado em captação de leads e venda de maquininha/adquirência.</p></div>
+    <div class="tools">
+      <div class="ctrl"><label>De</label><input id="from" type="date"></div>
+      <div class="ctrl"><label>Até</label><input id="to" type="date"></div>
+      <div class="ctrl"><label>Origem</label><select id="origem"><option value="ALL">Todas</option><option>WhatsApp</option><option>Indicação</option><option>Form site</option><option>Instagram</option><option>Inside sales</option></select></div>
+      <button class="btn" id="apply">🔎 Aplicar</button>
+      <button class="btn ghost" id="reset">↩︎ Reset</button>
+      <button class="btn ghost" id="newLeadTop">➕ Novo lead</button>
+    </div>
+  </div>
+
+  <section class="page active" id="page-home">
+    <div class="kpis">
+      <div class="card kpi"><h3>Leads no período</h3><div class="v" id="kpiLeads">—</div><div style="margin-top:8px"><span class="badge" id="kpiDelta">—</span> <span style="color:var(--m);font-size:12px">vs anterior</span></div></div>
+      <div class="card kpi"><h3>Negócios abertos</h3><div class="v" id="kpiDeals">—</div><div style="margin-top:8px"><span class="badge warn" id="kpiStalled">—</span> <span style="color:var(--m);font-size:12px">sem avanço 7d</span></div></div>
+      <div class="card kpi"><h3>Conversão</h3><div class="v" id="kpiConv">—</div><div style="margin-top:8px"><span class="badge good" id="kpiWon">—</span> <span style="color:var(--m);font-size:12px">fechados</span></div></div>
+      <div class="card kpi"><h3>Receita estimada (mock)</h3><div class="v" id="kpiRev">—</div><div style="margin-top:8px"><span class="badge" id="kpiRevInfo">Fechados</span> <span style="color:var(--m);font-size:12px">mês</span></div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card section">
+        <h2>Leads por dia</h2><div class="meta">Gráfico simples (mock). Alimenta ao criar leads.</div>
+        <div style="margin-top:10px"><svg id="chart" viewBox="0 0 900 260"></svg></div>
+      </div>
+      <div class="card section">
+        <h2>Próximas tarefas</h2><div class="meta">Clique para abrir o lead.</div>
+        <div id="nextTasks" style="margin-top:8px"></div>
+      </div>
+
+    <div class="card section" style="margin-top:12px">
+      <div class="panel-head">
+        <div>
+          <h2>Produtividade & SLA</h2>
+          <div class="meta">Indicadores de tarefas e SLA (mock) por owner. Vencidos aparecem em destaque.</div>
+        </div>
+      </div>
+      <div class="kpis" style="margin-top:12px">
+        <div class="card kpi"><h3>Tarefas abertas</h3><div class="v" id="kpiOpenTasks">—</div><div class="meta">No período</div></div>
+        <div class="card kpi"><h3>Tarefas vencidas</h3><div class="v" id="kpiOverdueTasks">—</div><div class="meta">Atenção imediata</div></div>
+        <div class="card kpi"><h3>Tarefas concluídas</h3><div class="v" id="kpiDoneTasks">—</div><div class="meta">No período</div></div>
+        <div class="card kpi"><h3>SLA (no prazo)</h3><div class="v" id="kpiSla">—</div><div class="meta">% concluídas no prazo</div></div>
+        <div class="card kpi"><h3>Média p/ concluir</h3><div class="v" id="kpiAvgDone">—</div><div class="meta">dias</div></div>
+      </div>
+      <div class="table" style="margin-top:10px">
+        <table>
+          <thead><tr><th>Owner</th><th>Criadas</th><th>Concluídas</th><th>Vencidas</th><th>SLA %</th></tr></thead>
+          <tbody id="tbodyOwners"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card section" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+        <div><h2>Leads recentes</h2><div class="meta">Clique na linha para detalhes.</div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn ghost" id="exportCsv">⬇️ Exportar CSV</button>
+        </div>
+      </div>
+      <div class="table" style="margin-top:10px">
+        <table><thead><tr>
+          <th data-sort="nome">Nome</th><th data-sort="empresa">Empresa</th><th data-sort="origem">Origem</th><th data-sort="etapa">Etapa</th>
+          <th data-sort="interesse">Interesse</th><th data-sort="tpv">TPV</th><th data-sort="last">Último</th><th data-sort="owner">Owner</th><th>Tarefas</th><th data-sort="status">Status</th>
+        </tr></thead><tbody id="tbodyHome"></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-leads">
+    <div class="card section">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+        <div><h2>Leads</h2><div class="meta">Busca + ordenação + detalhes.</div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="ctrl" style="padding:8px 10px;border-radius:12px"><label>Busca</label><input id="qLead" placeholder="nome, empresa, telefone..."></div>
+          <button class="btn" id="newLead">➕ Novo lead</button>
+          <button class="btn ghost" id="importJson">⬇️ Importar JSON</button>
+        </div>
+      </div>
+      <div class="table" style="margin-top:10px">
+        <table><thead><tr>
+          <th data-sort2="nome">Nome</th><th data-sort2="empresa">Empresa</th><th data-sort2="fone">Telefone</th><th data-sort2="origem">Origem</th>
+          <th data-sort2="tpv">TPV</th><th data-sort2="interesse">Interesse</th><th data-sort2="etapa">Etapa</th><th data-sort2="owner">Owner</th><th>Tarefas</th><th data-sort2="status">Status</th>
+        </tr></thead><tbody id="tbodyLeads"></tbody></table>
+      </div>
+      <div id="leadsFooter" style="margin-top:10px;color:var(--m);font-size:12px">—</div>
+    </div>
+  </section>
+
+  <section class="page" id="page-pipeline">
+    <div class="card section">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+        <div><h2>Pipeline</h2><div class="meta">Arraste os negócios entre etapas. Clique para abrir.</div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn ghost" id="newDeal">➕ Novo negócio</button>
+          <button class="btn ghost" id="resetPipe">↩︎ Reset pipeline</button>
+        </div>
+      </div>
+      <div class="kanban" id="kanban" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-propostas">
+    <div class="card section">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+        <div><h2>Simulador de proposta</h2><div class="meta">Modelo (mock) para adquirência/maquininha. Em produção, você pluga sua tabela real.</div></div>
+        <div><button class="btn ghost" id="useSelected">↳ Usar negócio selecionado</button></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+        <div class="card">
+          <h2>Cliente</h2>
+          <div class="kv">
+            <div class="field"><label>Empresa</label><input id="pEmpresa" placeholder="Mercado Bom Preço"></div>
+            <div class="field"><label>TPV mensal (USD)</label><input id="pTPV" type="number" placeholder="60000"></div>
+            <div class="field"><label>Segmento</label><select id="pSeg"><option>Varejo</option><option>Restaurante</option><option>Serviços</option><option>Farmácia</option><option>Auto</option></select></div>
+            <div class="field"><label>Qtd maquininhas</label><input id="pQtd" type="number" value="1" min="1"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Taxas e serviços</h2>
+          <div class="kv">
+            <div class="field"><label>Débito (%)</label><input id="pDeb" type="number" step="0.01" value="1.39"></div>
+            <div class="field"><label>Crédito à vista (%)</label><input id="pCred" type="number" step="0.01" value="2.79"></div>
+            <div class="field"><label>Crédito parcelado (%)</label><input id="pParc" type="number" step="0.01" value="3.49"></div>
+            <div class="field"><label>Aluguel por máquina (USD/mês)</label><input id="pAlug" type="number" step="1" value="25"></div>
+          </div>
+          <div class="rowbtn"><button class="btn" id="calc">🧮 Calcular</button><button class="btn ghost" id="copy">📋 Copiar</button></div>
+        </div>
+      </div>
+      
+      <div class="card section" style="margin-top:12px">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+          <div>
+            <h2>Tabela de taxas (presencial e e-commerce)</h2>
+            <div class="meta">Preencha por bandeira: débito, crédito à vista, faixas de parcelas, antecipação (automática/eventual). Inclui PIX. Salva automaticamente.</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn ghost" id="resetRates">↩︎ Reset taxas</button>
+          </div>
+        </div>
+
+        <div class="table" style="margin-top:10px">
+          <table style="min-width:1040px">
+            <thead>
+              <tr>
+                <th>Bandeira</th>
+                <th>Débito (%)</th>
+                <th>Crédito à vista (%)</th>
+                <th>2–6x (%)</th>
+                <th>7–12x (%)</th>
+                <th>13–21x (%)</th>
+                <th>Antecip. automática (%)</th>
+                <th>Antecip. eventual (%)</th>
+              </tr>
+            </thead>
+            <tbody id="ratesPOS"></tbody>
+          </table>
+        </div>
+
+        <div class="table" style="margin-top:12px">
+          <table style="min-width:1040px">
+            <thead>
+              <tr>
+                <th>Bandeira</th>
+                <th>Débito (%)</th>
+                <th>Crédito à vista (%)</th>
+                <th>2–6x (%)</th>
+                <th>7–12x (%)</th>
+                <th>13–21x (%)</th>
+                <th>Antecip. automática (%)</th>
+                <th>Antecip. eventual (%)</th>
+              </tr>
+            </thead>
+            <tbody id="ratesECOM"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card section" style="margin-top:12px">
+        <h2>Resultado</h2><div class="meta">Estimativa mensal (mock).</div>
+        <div id="propOut" style="margin-top:10px;color:var(--m);font-size:13px;line-height:1.55">Preencha e clique em “Calcular”.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-tarefas">
+    <div class="card section">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+        <div><h2>Tarefas</h2><div class="meta">Clique para marcar como concluída/aberta.</div></div>
+        <div><button class="btn" id="addTask">➕ Nova tarefa</button></div>
+      </div>
+      <div class="table" style="margin-top:10px">
+        <table><thead><tr>
+          <th data-sortt="due">Vencimento</th><th data-sortt="title">Título</th><th data-sortt="lead">Lead/Negócio</th>
+          <th data-sortt="prio">Prioridade</th><th data-sortt="owner">Owner</th><th data-sortt="done">Status</th>
+        </tr></thead><tbody id="tbodyTasks"></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  
+
+</main></div>
+
+<div class="modalBack" id="mb">
+  <div class="modal">
+    <div class="mhead"><b id="mt">Detalhes</b><button class="btn ghost" id="mclose">✕ Fechar</button></div>
+    <div class="mbody">
+      <div class="mcard">
+        <h4>Lead / Negócio</h4>
+        <div class="kv">
+          <div class="field"><label>Nome</label><input id="mNome"></div>
+          <div class="field"><label>Empresa</label><input id="mEmp"></div>
+          <div class="field"><label>Telefone</label><input id="mFone"></div>
+          <div class="field"><label>Origem</label><select id="mOrig"><option>WhatsApp</option><option>Indicação</option><option>Form site</option><option>Instagram</option><option>Inside sales</option></select></div>
+          <div class="field"><label>Interesse</label><select id="mInt"><option>Maquininha</option><option>Adquirência</option><option>PIX</option><option>Link de pagamento</option><option>Split</option><option>Antecipação</option><option>Conta digital</option></select></div>
+          <div class="field"><label>TPV (USD/mês)</label><input id="mTPV" type="number"></div>
+          <div class="field"><label>Etapa</label><select id="mEt"></select></div>
+          <div class="field"><label>Owner</label><select id="mOwn"><option>Inside • 01</option><option>Inside • 02</option><option>Field • 01</option><option>Field • 02</option></select></div>
+          <div class="field"><label>Status</label><select id="mSt"><option>Ativo</option><option>Em negociação</option><option>Fechado</option><option>Perdido</option></select></div>
+        </div>
+        <div class="rowbtn">
+          <button class="btn" id="msave">💾 Salvar</button>
+          <button class="btn ghost" id="mdeal">🧩 Criar/Atualizar negócio</button>
+          <button class="btn ghost" id="mprop">🧾 Ir para proposta</button>
+        </div>
+      </div>
+      <div class="mcard">
+        <h4>Atividades</h4>
+        <div class="field"><label>Registrar nota</label><textarea id="mNote" placeholder="Ligação, visita, proposta..."></textarea></div>
+        
+        <div class="grid2" style="margin-top:10px">
+          <div class="field"><label>Título da tarefa</label><input id="mTaskTitle" placeholder="Ex: Enviar proposta / Follow-up"></div>
+          <div class="field"><label>Vencimento</label><input id="mTaskDue" type="date"></div>
+          <div class="field"><label>Prioridade</label>
+            <select id="mTaskPrio">
+              <option>Baixa</option><option selected>Média</option><option>Alta</option>
+            </select>
+          </div>
+        </div>
+<div class="rowbtn"><button class="btn ghost" id="madd">➕ Adicionar</button><button class="btn ghost" id="mtask">✅ Criar tarefa</button></div>
+        <div id="timeline" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+const fmtUSD = new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"});
+const PIPE = ["Cadastro Ativo","Contato feito","Proposta enviada","Em negociação","Negócio fechado"];
+const ORIG = ["WhatsApp","Indicação","Form site","Instagram","Inside sales"];
+const INT  = ["Maquininha","Adquirência","PIX","Link de pagamento","Split","Antecipação","Conta digital"];
+const OWN  = ["Inside • 01","Inside • 02","Field • 01","Field • 02"];
+const LS   = "crm_adquirencia_demo_stable_v5";
+
+const iso = d => d.toISOString().slice(0,10);
+const addDays = (d,n)=>{const x=new Date(d); x.setDate(x.getDate()+n); return x;};
+const rand = (a,b)=>Math.random()*(b-a)+a;
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const uid = ()=>Math.random().toString(16).slice(2,10);
+
+const el = id => document.getElementById(id);
+
+function defaultRates(){
+  const brands = ["Visa","Mastercard","Elo","Amex","PIX"];
+  const mk = (brand,deb,cred,p26,p712,p1321,antAuto,antEvt)=>({brand,deb,cred,p26,p712,p1321,antAuto,antEvt});
+  return {
+    pos: [
+      mk("Visa",1.39,2.79,3.29,3.79,4.29,1.20,1.40),
+      mk("Mastercard",1.39,2.79,3.29,3.79,4.29,1.20,1.40),
+      mk("Elo",1.49,2.89,3.39,3.89,4.39,1.25,1.45),
+      mk("Amex",1.59,3.09,3.59,4.09,4.59,1.30,1.50),
+      mk("PIX",0,0,0,0,0,0,0),
+    ],
+    ecom: [
+      mk("Visa",1.79,3.19,3.79,4.29,4.79,1.30,1.55),
+      mk("Mastercard",1.79,3.19,3.79,4.29,4.79,1.30,1.55),
+      mk("Elo",1.89,3.29,3.89,4.39,4.89,1.35,1.60),
+      mk("Amex",1.99,3.49,4.09,4.59,5.09,1.40,1.65),
+      mk("PIX",0,0,0,0,0,0,0),
+    ]
+  };
+}
+
+function seed(){
+  const now = new Date();
+  const leads = [];
+  for(let i=0;i<24;i++){
+    const created = addDays(now,-Math.floor(rand(0,60)));
+    const etapa = pick(PIPE.slice(0,4)); // exclude "Negócio fechado" by default
+    const tpv = Math.round(rand(8000,120000));
+    leads.push({
+      id:"L"+uid(),
+      created: iso(created),
+      nome: pick(["Bruno","Camila","Rafa","Luana","Fábio","Kelly","Gustavo","Aline","Marcos","Patrícia"])+" "+pick(["Silva","Lima","Souza","Costa","Almeida","Ribeiro"]),
+      empresa: pick(["Mercado","Farmácia","Restaurante","Auto Center","Loja","Clínica"])+" "+pick(["Bom Preço","Central","Sabor BR","Prime","Express","Vida"]),
+      fone: "+1 "+Math.floor(rand(200,999))+"-"+Math.floor(rand(200,999))+"-"+Math.floor(rand(1000,9999)),
+      origem: pick(ORIG),
+      interesse: pick(INT),
+      tpv,
+      etapa,
+      owner: pick(OWN),
+      status: etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação",
+      last: iso(addDays(created,Math.floor(rand(0,14)))),
+      notes:[{id:"N"+uid(),at: iso(addDays(created,1)), text:"Lead captado e pré-qualificado (mock)."}]
+    });
+  }
+
+  const tasks = [
+    {id:"T"+uid(),due:iso(addDays(now,1)),title:"Follow-up WhatsApp",leadId:leads[0].id,prio:"Alta",owner:"Inside • 01",done:false},
+    {id:"T"+uid(),due:iso(addDays(now,2)),title:"Enviar proposta de taxas",leadId:leads[3].id,prio:"Média",owner:"Inside • 02",done:false},
+    {id:"T"+uid(),due:iso(addDays(now,4)),title:"Visita para instalação",leadId:leads[6].id,prio:"Média",owner:"Field • 01",done:false},
+  ];
+
+  // One deal per lead always
+  const deals = leads.map(l=>({
+    id:"D"+uid(),
+    leadId:l.id,
+    title:`${l.empresa} • ${l.interesse}`,
+    etapa:l.etapa,
+    tpv:l.tpv,
+    owner:l.owner,
+    created:l.created,
+    last:l.last,
+    status: l.etapa==="Negócio fechado" ? "Fechado" : (l.etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação"),
+    qty: Math.max(1,Math.round(rand(1,4))),
+    rent: 25,
+    mdrDeb: 1.39,
+    mdrCred: 2.79,
+    mdrParc: 3.49
+  }));
+
+  const data = {leads,deals,tasks,rates:defaultRates(),selectedDealId:deals[0]?.id||null};
+  localStorage.setItem(LS,JSON.stringify(data));
+  return data;
+}
+
+function load(){
+  try{
+    const r = localStorage.getItem(LS);
+    if(!r) return seed();
+    const d = JSON.parse(r);
+    if(!d.leads || !d.deals || !d.tasks) return seed();
+    if(!d.rates) d.rates = defaultRates();
+
+    // Ensure 1 deal per lead
+    const byLead = new Map(d.deals.map(x=>[x.leadId,x]));
+    d.leads.forEach(l=>{
+      if(!byLead.has(l.id)){
+        d.deals.push({
+          id:"D"+uid(),leadId:l.id,title:`${l.empresa} • ${l.interesse}`,
+          etapa:l.etapa,tpv:l.tpv,owner:l.owner,created:l.created,last:l.last,
+          status: l.etapa==="Negócio fechado" ? "Fechado" : (l.etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação"),
+          qty:1,rent:25,mdrDeb:1.39,mdrCred:2.79,mdrParc:3.49
+        });
+      }
+    });
+    // keep selected
+    if(!d.selectedDealId && d.deals[0]) d.selectedDealId = d.deals[0].id;
+    localStorage.setItem(LS,JSON.stringify(d));
+    return d;
+  }catch(e){
+    return seed();
+  }
+}
+
+const state = {
+  page:"home",
+  from:null,
+  to:null,
+  origem:"ALL",
+  sortKey:"last",
+  sortDir:"desc",
+  sortKey2:"last",
+  sortDir2:"desc",
+  sortTask:"due",
+  sortTaskDir:"asc",
+  data: load(),
+  modalLeadId:null
+};
+
+const pageMeta={
+  home:["Visão geral","CRM focado em captação de leads e venda de maquininha/adquirência."],
+  leads:["Leads","Base de leads com busca e detalhes."],
+  pipeline:["Pipeline","Kanban de negócios para acompanhar etapas."],
+  propostas:["Propostas","Simulador de taxas e tabela completa por bandeira (mock)."],
+  tarefas:["Tarefas","Follow-ups e atividades."]
+};
+
+const pages={
+  home: el("page-home"),
+  leads: el("page-leads"),
+  pipeline: el("page-pipeline"),
+  propostas: el("page-propostas"),
+  tarefas: el("page-tarefas")
+};
+
+const navBtns=[...document.querySelectorAll(".nav button")];
+navBtns.forEach(b=>b.onclick=()=>go(b.dataset.page));
+
+function save(){
+  try{ localStorage.setItem(LS,JSON.stringify(state.data)); }
+  catch(e){
+    console.error(e);
+    alert("⚠️ O armazenamento local do navegador está cheio. Clique em Reset (ou limpe o localStorage) e tente novamente.");
+  }
+}
+
+function setDates(){
+  const to=new Date();
+  const from=addDays(to,-29);
+  el("from").value=iso(from);
+  el("to").value=iso(to);
+  state.from=el("from").value;
+  state.to=el("to").value;
+}
+
+function inPeriod(dateISO,fromISO,toISO){
+  const d=new Date(dateISO+"T00:00:00"), a=new Date(fromISO+"T00:00:00"), b=new Date(toISO+"T00:00:00");
+  return d>=a && d<=b;
+}
+
+function leadsFiltered(){
+  return state.data.leads.filter(l=>{
+    if(state.from && state.to && !inPeriod(l.created,state.from,state.to)) return false;
+    if(state.origem!=="ALL" && l.origem!==state.origem) return false;
+    return true;
+  });
+}
+
+function leadById(id){ return state.data.leads.find(x=>x.id===id); }
+function dealById(id){ return state.data.deals.find(x=>x.id===id); }
+function dealByLead(leadId){ return state.data.deals.find(x=>x.leadId===leadId); }
+
+function syncLeadDeal(lead, deal){
+  // ensure fields in sync
+  deal.title = `${lead.empresa} • ${lead.interesse}`;
+  deal.tpv = lead.tpv;
+  deal.owner = lead.owner;
+  deal.etapa = lead.etapa;
+  deal.last = lead.last;
+  deal.status = lead.etapa==="Negócio fechado" ? "Fechado" : (lead.etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação");
+  lead.status = deal.status;
+}
+
+function go(p){
+  if(!pages[p]) p="home";
+  state.page=p;
+  navBtns.forEach(b=>b.classList.toggle("active", b.dataset.page===p));
+  Object.entries(pages).forEach(([k,v])=>v.classList.toggle("active", k===p));
+  el("pageTitle").textContent = pageMeta[p][0];
+  el("pageDesc").textContent = pageMeta[p][1];
+  render();
+}
+
+function sortBy(key,dir){
+  const m = dir==="asc"?1:-1;
+  return (a,b)=>{
+    const av=a[key], bv=b[key];
+    if(typeof av==="string") return av.localeCompare(bv,"pt-BR")*m;
+    return (av-bv)*m;
+  };
+}
+
+function openTasksCount(leadId){
+  return state.data.tasks.filter(t=>!t.done && t.leadId===leadId).length;
+}
+
+function overdueTasksCount(leadId){
+  const today = iso(new Date());
+  return state.data.tasks.filter(t=>!t.done && t.leadId===leadId && t.due < today).length;
+}
+function dueTodayTasksCount(leadId){
+  const today = iso(new Date());
+  return state.data.tasks.filter(t=>!t.done && t.leadId===leadId && t.due === today).length;
+}
+function minOpenDue(leadId){
+  const open = state.data.tasks.filter(t=>!t.done && t.leadId===leadId).map(t=>t.due).sort();
+  return open.length? open[0] : null;
+}
+
+
+function statusPill(l){
+  if(l.etapa==="Negócio fechado") return `<span class="status good"><span class="dot"></span>Fechado</span>`;
+  if(l.etapa==="Proposta enviada") return `<span class="status warn"><span class="dot"></span>Proposta</span>`;
+  if(l.etapa==="Em negociação") return `<span class="status warn"><span class="dot"></span>Negociação</span>`;
+  return `<span class="status"><span class="dot"></span>${l.status||"Ativo"}</span>`;
+}
+
+function renderKPIs(){
+  const leads=leadsFiltered();
+  const cnt=leads.length;
+
+  const a=new Date(state.from+"T00:00:00"), b=new Date(state.to+"T00:00:00");
+  const len=Math.round((b-a)/(1000*60*60*24))+1;
+  el("pillPeriod").textContent = len+"d";
+
+  const prevTo=addDays(a,-1), prevFrom=addDays(prevTo,-(len-1));
+  const prev=state.data.leads.filter(l=>inPeriod(l.created,iso(prevFrom),iso(prevTo)) && (state.origem==="ALL"||l.origem===state.origem));
+  const delta = prev.length ? (cnt-prev.length)/prev.length : 0;
+
+  el("kpiLeads").textContent = cnt.toLocaleString("pt-BR");
+  const bd=el("kpiDelta");
+  bd.textContent = (delta>=0?"+":"")+(delta*100).toFixed(1)+"%";
+  bd.className = "badge "+(delta>=0.04 ? "good" : "warn");
+
+  // Deals in period
+  const deals = state.data.deals.filter(d=>{
+    const l=leadById(d.leadId);
+    if(!l) return false;
+    if(state.origem!=="ALL" && l.origem!==state.origem) return false;
+    if(state.from && state.to && !inPeriod(d.created,state.from,state.to)) return false;
+    return true;
+  });
+  el("kpiDeals").textContent = deals.length.toLocaleString("pt-BR");
+
+  const now=new Date();
+  const stalled=deals.filter(d=>{
+    const last=new Date((d.last||d.created)+"T00:00:00");
+    return ((now-last)/(1000*60*60*24))>=7 && d.etapa!=="Negócio fechado";
+  }).length;
+  el("kpiStalled").textContent = stalled.toLocaleString("pt-BR");
+
+  const won=deals.filter(d=>d.etapa==="Negócio fechado").length;
+  const conv=cnt?won/cnt:0;
+  el("kpiConv").textContent=(conv*100).toFixed(1)+"%";
+  el("kpiWon").textContent=won.toLocaleString("pt-BR");
+
+  const rev = deals.reduce((acc,d)=>{
+    if(d.etapa!=="Negócio fechado") return acc;
+    const mdr=(d.mdrDeb*0.35+d.mdrCred*0.45+d.mdrParc*0.20)/100;
+    return acc + d.tpv*mdr + (d.qty||1)*(d.rent||25);
+  },0);
+  el("kpiRev").textContent = fmtUSD.format(rev);
+
+  el("pillLeads").textContent = state.data.leads.length.toLocaleString("pt-BR");
+  el("pillTasks").textContent = state.data.tasks.filter(t=>!t.done).length.toLocaleString("pt-BR");
+}
+
+function svg(tag,attrs={}){
+  const e=document.createElementNS("http://www.w3.org/2000/svg",tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]);
+  return e;
+}
+
+function chart(){
+  const s=el("chart");
+  while(s.firstChild) s.removeChild(s.firstChild);
+  const vb=s.viewBox.baseVal, w=vb.width, h=vb.height, pad=34;
+  for(let i=0;i<=4;i++){
+    const y=pad+(h-2*pad)*(i/4);
+    s.appendChild(svg("line",{x1:pad,y1:y,x2:w-pad,y2:y,stroke:"rgba(255,255,255,.06)"}));
+  }
+  const a=new Date(state.from+"T00:00:00"), b=new Date(state.to+"T00:00:00");
+  const len=Math.round((b-a)/(1000*60*60*24))+1;
+  const days=[...Array(len)].map((_,i)=>iso(addDays(a,i)));
+  const leads=leadsFiltered();
+  const series=days.map(d=>leads.filter(l=>l.created===d).length);
+  const max=Math.max(...series,1);
+  const X=i=>pad+(w-2*pad)*(i/Math.max(len-1,1));
+  const Y=v=>pad+(h-2*pad)*(1-(v/max));
+  let d=""; series.forEach((v,i)=>d+=(i?"L":"M")+X(i).toFixed(2)+" "+Y(v).toFixed(2)+" ");
+  s.appendChild(svg("path",{d:d.trim(),fill:"none",stroke:"rgba(36,209,143,.95)","stroke-width":"2.6"}));
+  series.forEach((v,i)=>s.appendChild(svg("circle",{cx:X(i),cy:Y(v),r:"3",fill:"rgba(36,209,143,.95)"})));
+}
+
+function nextTasks(){
+  const open=state.data.tasks.filter(t=>!t.done).sort(sortBy("due","asc")).slice(0,5);
+  const wrap=el("nextTasks");
+  wrap.innerHTML="";
+  if(!open.length){
+    wrap.innerHTML='<div style="color:var(--m);font-size:12px">Sem tarefas em aberto.</div>';
+    return;
+  }
+  open.forEach(t=>{
+    const l=leadById(t.leadId);
+    const div=document.createElement("div");
+    div.className="deal";
+    div.style.cursor="pointer";
+    div.innerHTML=`<b>${t.title}</b><small>${l?l.empresa:"—"} • ${t.owner}</small><div class="row"><span class="tag">Vence ${t.due}</span><span class="tag">${t.prio}</span></div>`;
+    div.onclick=()=>{ if(l) openLead(l.id); };
+    wrap.appendChild(div);
+  });
+}
+
+function renderHomeTable(){
+  const leads=[...leadsFiltered()];
+  leads.sort((a,b)=>{
+    if(state.sortKey==="tasks"){
+      const ao=openTasksCount(a.id), bo=openTasksCount(b.id);
+      return state.sortDir==="asc" ? (ao-bo) : (bo-ao);
+    }
+    return sortBy(state.sortKey,state.sortDir)(a,b);
+  });
+  const show=leads.slice(0,14);
+
+  const tb=el("tbodyHome");
+  tb.innerHTML="";
+  show.forEach(l=>{
+    const tr=document.createElement("tr");
+    const c=openTasksCount(l.id);
+    tr.innerHTML = `
+      <td><b>${l.nome}</b><div style="color:var(--m);font-family:ui-monospace;font-size:11px;margin-top:3px">${l.id}</div></td>
+      <td>${l.empresa}</td>
+      <td>${l.origem}</td>
+      <td>${l.etapa}</td>
+      <td>${l.interesse}</td>
+      <td style="font-family:ui-monospace">${fmtUSD.format(l.tpv)}</td>
+      <td style="font-family:ui-monospace">${l.last}</td>
+      <td>${l.owner}</td>
+      <td>${c?`<span class="badge warn">${c}</span>`:`<span style="color:var(--m)">—</span>`}</td>
+      <td>${statusPill(l)}</td>
+    `;
+    tr.style.cursor="pointer";
+    tr.onclick=()=>openLead(l.id);
+    tb.appendChild(tr);
+  });
+}
+
+function renderLeads(){
+  let leads=[...leadsFiltered()];
+  const q=(el("qLead").value||"").trim().toLowerCase();
+  if(q){
+    leads = leads.filter(l =>
+      (l.nome||"").toLowerCase().includes(q) ||
+      (l.empresa||"").toLowerCase().includes(q) ||
+      (l.fone||"").toLowerCase().includes(q) ||
+      (l.id||"").toLowerCase().includes(q)
+    );
+  }
+  leads.sort((a,b)=>{
+    if(state.sortKey2==="tasks"){
+      const ao=openTasksCount(a.id), bo=openTasksCount(b.id);
+      return state.sortDir2==="asc" ? (ao-bo) : (bo-ao);
+    }
+    return sortBy(state.sortKey2,state.sortDir2)(a,b);
+  });
+
+  const tb=el("tbodyLeads");
+  tb.innerHTML="";
+  leads.forEach(l=>{
+    const tr=document.createElement("tr");
+    const c=openTasksCount(l.id);
+    tr.innerHTML=`
+      <td><b>${l.nome}</b><div style="color:var(--m);font-family:ui-monospace;font-size:11px;margin-top:3px">${l.id}</div></td>
+      <td>${l.empresa}</td>
+      <td style="font-family:ui-monospace">${l.fone}</td>
+      <td>${l.origem}</td>
+      <td style="font-family:ui-monospace">${fmtUSD.format(l.tpv)}</td>
+      <td>${l.interesse}</td>
+      <td>${l.etapa}</td>
+      <td>${l.owner}</td>
+      <td>${c?`<span class="badge warn">${c}</span>`:`<span style="color:var(--m)">—</span>`}</td>
+      <td>${statusPill(l)}</td>
+    `;
+    tr.style.cursor="pointer";
+    tr.onclick=()=>openLead(l.id);
+    tb.appendChild(tr);
+  });
+  el("leadsFooter").textContent = `${leads.length} leads exibidos • origem: ${state.origem==="ALL"?"todas":state.origem}`;
+}
+
+function renderKanban(){
+  const k=el("kanban");
+  k.innerHTML="";
+
+  const deals = state.data.deals.filter(d=>{
+    const l=leadById(d.leadId);
+    if(!l) return false;
+    if(state.origem!=="ALL" && l.origem!==state.origem) return false;
+    if(state.from && state.to && !inPeriod(d.created,state.from,state.to)) return false;
+    return true;
+  });
+
+  PIPE.forEach(stage=>{
+    const list=deals.filter(d=>d.etapa===stage);
+    const col=document.createElement("div");
+    col.className="col";
+    col.innerHTML=`
+      <div class="colhead">
+        <div>
+          <b>${stage}</b>
+          <div style="color:var(--m);font-size:11px">${list.length} negócio(s)</div>
+        </div>
+        <span class="pill">${stage==="Negócio fechado"?"✅":"→"}</span>
+      </div>
+      <div class="drop" data-stage="${stage}"></div>
+    `;
+    const drop=col.querySelector(".drop");
+
+    drop.ondragover=e=>{e.preventDefault(); drop.style.outline="2px solid rgba(36,209,143,.35)"; drop.style.outlineOffset="4px";};
+    drop.ondragleave=()=>{drop.style.outline="none";};
+    drop.ondrop=e=>{
+      e.preventDefault(); drop.style.outline="none";
+      const id=e.dataTransfer.getData("text/deal");
+      const d=dealById(id); if(!d) return;
+      d.etapa=stage;
+      d.last=iso(new Date());
+      d.status = (stage==="Negócio fechado") ? "Fechado" : (stage==="Cadastro Ativo" ? "Ativo" : "Em negociação");
+      state.data.selectedDealId=d.id;
+
+      const l=leadById(d.leadId);
+      if(l){
+        l.etapa=stage;
+        l.last=d.last;
+        l.status=d.status;
+      }
+      save();
+      render();
+    };
+
+    list.forEach(d=>{
+      const l=leadById(d.leadId);
+      const card=document.createElement("div");
+      card.className="deal";
+      card.draggable=true;
+      card.ondragstart=e=>{e.dataTransfer.setData("text/deal",d.id); e.dataTransfer.effectAllowed="move";};
+      card.onclick=()=>openDeal(d.id);
+
+      const open=openTasksCount(d.leadId);
+      const overdue=overdueTasksCount(d.leadId);
+      const todayDue=dueTodayTasksCount(d.leadId);
+      const nextDue=minOpenDue(d.leadId);
+      if(overdue>0){ card.style.borderColor="rgba(239,68,68,.55)"; card.style.boxShadow="0 0 0 1px rgba(239,68,68,.12), 0 16px 40px rgba(0,0,0,.25)"; }
+      else if(todayDue>0){ card.style.borderColor="rgba(245,158,11,.55)"; }
+      card.innerHTML=`
+        <b>${d.title}</b>
+        <small>${l?l.nome:"—"} • ${d.owner}</small>
+        <div class="row">
+          <span class="tag">TPV ${fmtUSD.format(d.tpv)}</span>
+          <span class="tag">${d.qty} máquina(s)</span>
+          ${overdue?`<span class="tag" style="border-color:rgba(239,68,68,.55);background:rgba(239,68,68,.12)">⏰ Vencida ${overdue}</span>`:""}
+          ${todayDue?`<span class="tag" style="border-color:rgba(245,158,11,.55);background:rgba(245,158,11,.12)">📅 Hoje ${todayDue}</span>`:""}
+          ${open?`<span class="tag" style="border-color:rgba(245,158,11,.45);background:rgba(245,158,11,.10)">🔔 ${open}</span>`:`<span class="tag">Sem tarefas</span>`}
+          ${nextDue?`<span class="tag">Próx: ${nextDue}</span>`:""}
+        </div>
+      `;
+      drop.appendChild(card);
+    });
+
+    k.appendChild(col);
+  });
+}
+
+function renderTasks(){
+  let tasks=[...state.data.tasks].sort(sortBy(state.sortTask,state.sortTaskDir));
+  const tb=el("tbodyTasks");
+  tb.innerHTML="";
+  tasks.forEach(t=>{
+    const l=leadById(t.leadId);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td style="font-family:ui-monospace">${t.due}</td>
+      <td><b>${t.title}</b></td>
+      <td>${l?l.empresa:"—"}</td>
+      <td>${t.prio}</td>
+      <td>${t.owner}</td>
+      <td>${t.done?'<span class="status good"><span class="dot"></span>Concluída</span>':'<span class="status warn"><span class="dot"></span>Aberta</span>'}</td>
+    `;
+    tr.style.cursor="pointer";
+    tr.onclick=()=>{
+      t.done=!t.done;
+      if(t.done){ t.completedAt = iso(new Date()); }
+      else { t.completedAt = null; }
+      save();
+      render();
+    };
+    tb.appendChild(tr);
+  });
+}
+
+
+
+function openTaskModal(prefLeadId=null){
+  const modal = document.getElementById("taskModal");
+  if(!modal) return;
+  // fill selects
+  const leadSel = document.getElementById("tLead");
+  const ownerSel = document.getElementById("tOwner");
+  if(leadSel){
+    const leads=[...state.data.leads].sort((a,b)=>(a.empresa||"").localeCompare(b.empresa||""));
+    leadSel.innerHTML = leads.map(l=>`<option value="${l.id}">${esc(l.empresa||l.nome||l.id)}</option>`).join("");
+    if(prefLeadId) leadSel.value = prefLeadId;
+  }
+  if(ownerSel){
+    ownerSel.innerHTML = OWN.map(o=>`<option>${o}</option>`).join("");
+    const lid = leadSel ? leadSel.value : prefLeadId;
+    const l = lid ? leadById(lid) : null;
+    ownerSel.value = (l && l.owner) ? l.owner : OWN[0];
+  }
+  const title = document.getElementById("tTitle");
+  const due = document.getElementById("tDue");
+  const prio = document.getElementById("tPrio");
+  if(title) title.value = (title && title.value) ? title.value : "";
+  if(due) due.value = iso(addDays(new Date(), 1));
+  if(prio) prio.value = "Média";
+  modal.style.display="grid";
+}
+function closeTaskModal(){
+  const modal = document.getElementById("taskModal");
+  if(modal) modal.style.display="none";
+}
+
+function bindLateUI(){
+  // Task modal buttons (rendered after script)
+  const closeBtn = document.getElementById("taskClose");
+  const cancelBtn = document.getElementById("tCancel");
+  const saveBtn = document.getElementById("tSave");
+  if(closeBtn) closeBtn.onclick = closeTaskModal;
+  if(cancelBtn) cancelBtn.onclick = closeTaskModal;
+
+  const leadSel = document.getElementById("tLead");
+  const ownerSel = document.getElementById("tOwner");
+  if(leadSel){
+    leadSel.onchange = ()=>{
+      if(!ownerSel) return;
+      const l = leadById(leadSel.value);
+      ownerSel.value = (l && l.owner) ? l.owner : OWN[0];
+    };
+  }
+
+  if(saveBtn){
+    saveBtn.onclick = ()=>{
+      const lid = document.getElementById("tLead")?.value;
+      if(!lid) { alert("Selecione um lead"); return; }
+      const title = (document.getElementById("tTitle")?.value || "").trim() || "Nova tarefa";
+      const due = document.getElementById("tDue")?.value || iso(addDays(new Date(), 1));
+      const prio = document.getElementById("tPrio")?.value || "Média";
+      const owner = document.getElementById("tOwner")?.value || null;
+      addTask(lid, title, due, prio, owner);
+      closeTaskModal();
+      // clear fields
+      const tTitle = document.getElementById("tTitle"); if(tTitle) tTitle.value="";
+    };
+  }
+}
+
+window.addEventListener("load", bindLateUI);
+
+function renderProductivity(){
+  const openEl = el("kpiOpenTasks");
+  if(!openEl) return;
+
+  const from = state.from, to = state.to;
+  const today = iso(new Date());
+
+  const tasksAll = state.data.tasks.map(t=>{
+    if(!t.createdAt) t.createdAt = t.created || iso(new Date());
+    if(typeof t.completedAt === "undefined") t.completedAt = null;
+    return t;
+  });
+
+  const tasks = tasksAll.filter(t=>{
+    if(!from || !to) return true;
+    return t.createdAt >= from && t.createdAt <= to;
+  });
+
+  const open = tasks.filter(t=>!t.done).length;
+  const overdue = tasks.filter(t=>!t.done && t.due < today).length;
+  const done = tasks.filter(t=>t.done).length;
+  const doneOnTime = tasks.filter(t=>t.done && t.completedAt && t.completedAt <= t.due).length;
+  const sla = done ? Math.round((doneOnTime/done)*100) : 0;
+
+  // avg time to complete in days
+  let totalDays = 0, n = 0;
+  tasks.forEach(t=>{
+    if(t.done && t.completedAt){
+      const a = new Date(t.createdAt);
+      const b = new Date(t.completedAt);
+      const days = Math.max(0, Math.round((b-a)/(1000*60*60*24)));
+      totalDays += days; n += 1;
+    }
+  });
+  const avgDays = n ? (totalDays/n).toFixed(1) : "—";
+
+  el("kpiOpenTasks").textContent = open;
+  el("kpiOverdueTasks").textContent = overdue;
+  el("kpiDoneTasks").textContent = done;
+  el("kpiSla").textContent = sla + "%";
+  el("kpiAvgDone").textContent = avgDays;
+
+  // Owner leaderboard
+  const owners = {};
+  tasks.forEach(t=>{
+    const o = t.owner || "—";
+    if(!owners[o]) owners[o] = {open:0, overdue:0, done:0, ontime:0};
+    if(t.done){ owners[o].done += 1; if(t.completedAt && t.completedAt <= t.due) owners[o].ontime += 1; }
+    else { owners[o].open += 1; if(t.due < today) owners[o].overdue += 1; }
+  });
+  const rows = Object.entries(owners).map(([o,st])=>{
+    const osla = st.done ? Math.round((st.ontime/st.done)*100) : 0;
+    return {o, ...st, osla};
+  }).sort((a,b)=> (b.done-b.open) - (a.done-a.open));
+
+  const tb = el("tbodyOwners");
+  if(tb){
+    tb.innerHTML = rows.map(r=>`
+      <tr>
+        <td><b>${esc(r.o)}</b></td>
+        <td>${r.open}</td>
+        <td>${r.overdue ? `<span class="badge" style="border-color:rgba(239,68,68,.55);background:rgba(239,68,68,.12)">⏰ ${r.overdue}</span>` : "0"}</td>
+        <td>${r.done}</td>
+        <td>${r.osla}%</td>
+      </tr>
+    `).join("") || `<tr><td colspan="5" style="color:var(--m)">—</td></tr>`;
+  }
+}
+
+
+
+
+function fillProposal(){
+  const id=state.data.selectedDealId;
+  const d=id?dealById(id):null;
+  if(!d){ el("pEmpresa").value=""; el("pTPV").value=""; el("pQtd").value=1; return; }
+  const l=leadById(d.leadId);
+  el("pEmpresa").value = (l && l.empresa) || d.title;
+  el("pTPV").value = d.tpv||0;
+  el("pQtd").value = d.qty||1;
+  el("pDeb").value = d.mdrDeb ?? 1.39;
+  el("pCred").value = d.mdrCred ?? 2.79;
+  el("pParc").value = d.mdrParc ?? 3.49;
+  el("pAlug").value = d.rent ?? 25;
+}
+
+function calcProposal(){
+  const emp=(el("pEmpresa").value||"—").trim();
+  const tpv=Number(el("pTPV").value||0);
+  const qtd=Math.max(1,Number(el("pQtd").value||1));
+  const deb=Number(el("pDeb").value||0)/100, cred=Number(el("pCred").value||0)/100, parc=Number(el("pParc").value||0)/100, alug=Number(el("pAlug").value||0);
+  const mixDeb=.35,mixCred=.45,mixParc=.20;
+  const fee=tpv*(mixDeb*deb+mixCred*cred+mixParc*parc);
+  const rent=qtd*alug;
+  const total=fee+rent;
+
+  el("propOut").innerHTML = `<b>${emp}</b><br><br>
+    TPV mensal: <b>${fmtUSD.format(tpv)}</b><br>
+    Mix (mock): Débito ${(mixDeb*100).toFixed(0)}% • Crédito ${(mixCred*100).toFixed(0)}% • Parcelado ${(mixParc*100).toFixed(0)}%<br><br>
+    Taxas: Débito <b>${(deb*100).toFixed(2)}%</b> • Crédito <b>${(cred*100).toFixed(2)}%</b> • Parcelado <b>${(parc*100).toFixed(2)}%</b><br>
+    Serviços: <b>${qtd}</b> máquina(s) • Aluguel <b>${fmtUSD.format(alug)}</b>/mês cada<br><br>
+    Receita estimada (mês): <b>${fmtUSD.format(total)}</b><br>
+    <span style="color:var(--m)">Estimativa demo. Em produção, use sua regra real por bandeira/tipo/parcelas e antecipação.</span>`;
+
+  const d=state.data.selectedDealId?dealById(state.data.selectedDealId):null;
+  if(d){
+    d.tpv=tpv; d.qty=qtd; d.rent=alug;
+    d.mdrDeb=deb*100; d.mdrCred=cred*100; d.mdrParc=parc*100;
+    d.last=iso(new Date());
+    const l=leadById(d.leadId);
+    if(l){ l.tpv=tpv; l.last=d.last; }
+    save();
+    render();
+  }
+}
+
+function download(name,text,type="text/plain"){
+  const blob=new Blob([text],{type});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),800);
+}
+
+function leadsCSV(arr){
+  const h=["id","created","nome","empresa","fone","origem","interesse","tpv","etapa","owner","status","last"];
+  const lines=[h.join(",")];
+  arr.forEach(l=>{
+    lines.push([
+      l.id,l.created,
+      `"${(l.nome||"").replaceAll('"','""')}"`,
+      `"${(l.empresa||"").replaceAll('"','""')}"`,
+      `"${(l.fone||"").replaceAll('"','""')}"`,
+      l.origem,l.interesse,(Number(l.tpv||0)).toFixed(2),
+      l.etapa,l.owner,l.status,l.last
+    ].join(","));
+  });
+  return lines.join("\n");
+}
+
+function createLead(){
+  const now=new Date();
+  const lead={
+    id:"L"+uid(),
+    created: iso(now),
+    nome:"Novo Lead",
+    empresa:"Empresa",
+    fone:"+1 ___-___-____",
+    origem: state.origem==="ALL" ? "WhatsApp" : state.origem,
+    interesse:"Maquininha",
+    tpv: 30000,
+    etapa:"Cadastro Ativo",
+    owner:"Inside • 01",
+    status:"Ativo",
+    last: iso(now),
+    notes:[{id:"N"+uid(),at: iso(now), text:"Lead criado (demo)."}]
+  };
+
+  state.data.leads.unshift(lead);
+
+  // create deal card immediately (1 per lead)
+  state.data.deals.unshift({
+    id:"D"+uid(),
+    leadId: lead.id,
+    title:`${lead.empresa} • ${lead.interesse}`,
+    etapa: lead.etapa,
+    tpv: lead.tpv,
+    owner: lead.owner,
+    created: lead.created,
+    last: lead.last,
+    status: lead.status,
+    qty: 1,
+    rent: 25,
+    mdrDeb: 1.39,
+    mdrCred: 2.79,
+    mdrParc: 3.49
+  });
+
+  state.data.selectedDealId = state.data.deals[0].id;
+  save();
+  render();
+  openLead(lead.id);
+}
+
+function addTask(leadId, title="Follow-up do lead", due=null, prio="Média", owner=null){
+  const l=leadById(leadId);
+  const d = dealByLead(leadId);
+  const o = owner || (d && d.owner) || (l && l.owner) || "Inside • 01";
+  const dd = due || iso(addDays(new Date(),1));
+  state.data.tasks.push({
+    id:"T"+uid(),
+    createdAt: iso(new Date()),
+    due: dd,
+    title,
+    leadId,
+    prio,
+    owner: o,
+    done:false,
+    completedAt: null
+  });
+  save();
+  render();
+  // update modal task list immediately (if open)
+  try{ if(state.modalLeadId===leadId) renderTasksForLead(leadId); }catch(e){}
+}
+
+function esc(s){
+  return (s||"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+function timeline(l){
+  const wrap=el("timeline");
+  wrap.innerHTML="";
+  const notes=[...(l.notes||[])].sort((a,b)=>a.at.localeCompare(b.at)).reverse();
+  if(!notes.length){
+    wrap.innerHTML='<div style="color:var(--m);font-size:12px">Sem atividades.</div>';
+    return;
+  }
+  notes.forEach(n=>{
+    const div=document.createElement("div");
+    div.className="deal";
+    div.style.cursor="default";
+    div.innerHTML=`<b>${n.at}</b><small>${esc(n.text)}</small>`;
+    wrap.appendChild(div);
+  });
+}
+
+function renderTasksForLead(leadId){
+  const wrap=el("leadTasks");
+  if(!wrap) return;
+  const list=state.data.tasks.filter(t=>t.leadId===leadId).sort((a,b)=>a.due.localeCompare(b.due));
+  wrap.innerHTML="";
+  if(!list.length){
+    wrap.innerHTML='<div style="color:var(--m);font-size:12px">Nenhuma tarefa vinculada.</div>';
+    return;
+  }
+  list.forEach(t=>{
+    const div=document.createElement("div");
+    div.className="deal";
+    div.style.cursor="default";
+    div.innerHTML=`
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+        <div>
+          <b>${esc(t.title)}</b>
+          <small>Vence ${t.due} • ${t.owner} • ${t.prio}</small>
+        </div>
+        <label class="tag" style="display:flex;gap:8px;align-items:center;cursor:pointer">
+          <input type="checkbox" ${t.done?"checked":""} data-task-id="${t.id}" style="accent-color:#24d18f;transform: translateY(1px)">
+          <span>${t.done?"Concluída":"Aberta"}</span>
+        </label>
+      </div>
+    `;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('input[data-task-id]').forEach(cb=>{
+    cb.onchange=()=>{
+      const id=cb.getAttribute("data-task-id");
+      const t=state.data.tasks.find(x=>x.id===id);
+      if(!t) return;
+      t.done = cb.checked;
+      save();
+      render();
+      renderTasksForLead(leadId);
+    };
+  });
+}
+
+function showModal(on){ el("mb").classList.toggle("show", on); }
+
+function openLead(id){
+  state.modalLeadId=id;
+  const l=leadById(id); if(!l) return;
+
+  // populate stage select
+  el("mEt").innerHTML="";
+  PIPE.forEach(p=>{
+    const o=document.createElement("option");
+    o.value=p; o.textContent=p;
+    el("mEt").appendChild(o);
+  });
+
+  el("mt").textContent = "Lead: "+l.nome;
+  el("mNome").value = l.nome||"";
+  el("mEmp").value = l.empresa||"";
+  el("mFone").value = l.fone||"";
+  el("mOrig").value = l.origem||"WhatsApp";
+  el("mInt").value = l.interesse||"Maquininha";
+  el("mTPV").value = l.tpv||0;
+  el("mEt").value = l.etapa||"Cadastro Ativo";
+  el("mOwn").value = l.owner||OWN[0];
+  el("mSt").value = l.status||"Ativo";
+  el("mNote").value = "";
+  timeline(l);
+  renderTasksForLead(l.id);
+  showModal(true);
+}
+
+function openDeal(id){
+  const d=dealById(id); if(!d) return;
+  const l=leadById(d.leadId); if(!l) return;
+
+  state.data.selectedDealId = d.id;
+
+  el("mEt").innerHTML="";
+  PIPE.forEach(p=>{
+    const o=document.createElement("option");
+    o.value=p; o.textContent=p;
+    el("mEt").appendChild(o);
+  });
+
+  el("mt").textContent = "Negócio: "+d.title;
+  el("mNome").value = l.nome||"";
+  el("mEmp").value = l.empresa||"";
+  el("mFone").value = l.fone||"";
+  el("mOrig").value = l.origem||"WhatsApp";
+  el("mInt").value = l.interesse||"Maquininha";
+  el("mTPV").value = d.tpv||l.tpv||0;
+  el("mEt").value = d.etapa||l.etapa||"Cadastro Ativo";
+  el("mOwn").value = d.owner||l.owner||OWN[0];
+  el("mSt").value = d.status||l.status||"Ativo";
+  el("mNote").value = "";
+  el("mTaskDue").value = iso(addDays(new Date(),1));
+  el("mTaskPrio").value = "Média";
+
+  timeline(l);
+  renderTasksForLead(l.id);
+  showModal(true);
+}
+
+function renderRates(){
+  const posBody=el("ratesPOS"), ecomBody=el("ratesECOM");
+  if(!posBody || !ecomBody) return;
+
+  const mkInp=(kind,brand,field,val)=>`<input class="mono" style="width:110px" type="number" step="0.01" value="${Number(val||0)}" data-rate-kind="${kind}" data-rate-brand="${brand}" data-rate-field="${field}">`;
+  const row=(kind,r)=>`
+    <tr>
+      <td><b>${r.brand}</b></td>
+      <td>${mkInp(kind,r.brand,"deb",r.deb)}</td>
+      <td>${mkInp(kind,r.brand,"cred",r.cred)}</td>
+      <td>${mkInp(kind,r.brand,"p26",r.p26)}</td>
+      <td>${mkInp(kind,r.brand,"p712",r.p712)}</td>
+      <td>${mkInp(kind,r.brand,"p1321",r.p1321)}</td>
+      <td>${mkInp(kind,r.brand,"antAuto",r.antAuto)}</td>
+      <td>${mkInp(kind,r.brand,"antEvt",r.antEvt)}</td>
+    </tr>
+  `;
+
+  posBody.innerHTML = state.data.rates.pos.map(r=>row("pos",r)).join("");
+  ecomBody.innerHTML = state.data.rates.ecom.map(r=>row("ecom",r)).join("");
+
+  document.querySelectorAll('input[data-rate-kind]').forEach(inp=>{
+    inp.onchange=()=>{
+      const kind=inp.getAttribute("data-rate-kind");
+      const brand=inp.getAttribute("data-rate-brand");
+      const field=inp.getAttribute("data-rate-field");
+      const val=Number(inp.value||0);
+      const row = state.data.rates[kind].find(x=>x.brand===brand);
+      if(!row) return;
+      row[field]=val;
+      save();
+    };
+  });
+}
+
+function resetRates(){
+  state.data.rates = defaultRates();
+  save();
+  renderRates();
+}
+
+// Modal events
+el("mclose").onclick=()=>showModal(false);
+el("mb").onclick=e=>{ if(e.target===el("mb")) showModal(false); };
+
+el("madd").onclick=()=>{
+  const l=leadById(state.modalLeadId); if(!l) return;
+  const text=(el("mNote").value||"").trim();
+  if(!text) return;
+  l.notes = l.notes || [];
+  l.notes.push({id:"N"+uid(), at: iso(new Date()), text});
+  l.last = iso(new Date());
+  el("mNote").value="";
+  const d=dealByLead(l.id); if(d){ d.last=l.last; }
+  save();
+  timeline(l);
+  render();
+};
+
+el("mtask").onclick=()=>{
+  const titleEl = document.getElementById("mTaskTitle");
+  const dueEl = document.getElementById("mTaskDue");
+  const prioEl = document.getElementById("mTaskPrio");
+  const note = (el("mNote")?el("mNote").value:"") || "";
+  const title = (titleEl && titleEl.value ? titleEl.value : "").trim()
+    || (note.trim() ? ("Follow-up: "+note.trim().slice(0,60)) : "Follow-up do lead");
+  const due = (dueEl && dueEl.value) ? dueEl.value : iso(addDays(new Date(),1));
+  const prio = (prioEl && prioEl.value) ? prioEl.value : "Média";
+  const l = leadById(state.modalLeadId);
+  const owner = l?l.owner:null;
+  addTask(state.modalLeadId, title, due, prio, owner);
+  try{ renderTasksForLead(state.modalLeadId); }catch(e){}
+  if(titleEl) titleEl.value="";
+  if(el("mNote")) el("mNote").value="";
+};
+
+el("msave").onclick=()=>{
+  const l=leadById(state.modalLeadId); if(!l) return;
+
+  l.nome = el("mNome").value.trim();
+  l.empresa = el("mEmp").value.trim();
+  l.fone = el("mFone").value.trim();
+  l.origem = el("mOrig").value;
+  l.interesse = el("mInt").value;
+  l.tpv = Number(el("mTPV").value||0);
+  l.etapa = el("mEt").value;
+  l.owner = el("mOwn").value;
+  l.status = el("mSt").value;
+  l.last = iso(new Date());
+
+  // sync deal
+  let d=dealByLead(l.id);
+  if(!d){
+    d={
+      id:"D"+uid(),leadId:l.id,title:`${l.empresa} • ${l.interesse}`,
+      etapa:l.etapa,tpv:l.tpv,owner:l.owner,created:l.created,last:l.last,status:l.status,
+      qty:1,rent:25,mdrDeb:1.39,mdrCred:2.79,mdrParc:3.49
+    };
+    state.data.deals.unshift(d);
+  }else{
+    syncLeadDeal(l,d);
+  }
+
+  // normalize status per etapa (even if user sets)
+  d.status = (d.etapa==="Negócio fechado") ? "Fechado" : (d.etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação");
+  l.status = d.status;
+
+  state.data.selectedDealId = d.id;
+  save();
+  render();
+  showModal(false);
+};
+
+el("mdeal").onclick=()=>{
+  // this button keeps a deal in sync and moves to Contato feito if still Cadastro Ativo
+  const l=leadById(state.modalLeadId); if(!l) return;
+  let d=dealByLead(l.id);
+  if(!d){
+    d={id:"D"+uid(),leadId:l.id,title:`${l.empresa} • ${l.interesse}`,etapa:l.etapa,tpv:l.tpv,owner:l.owner,created:l.created,last:iso(new Date()),status:"Em negociação",qty:1,rent:25,mdrDeb:1.39,mdrCred:2.79,mdrParc:3.49};
+    state.data.deals.unshift(d);
+  }
+  if(d.etapa==="Cadastro Ativo") d.etapa="Contato feito";
+  l.etapa=d.etapa;
+  l.last=iso(new Date());
+  d.last=l.last;
+  d.status = (d.etapa==="Negócio fechado") ? "Fechado" : (d.etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação");
+  l.status = d.status;
+  syncLeadDeal(l,d);
+  state.data.selectedDealId=d.id;
+  save();
+  render();
+  showModal(false);
+  go("pipeline");
+};
+
+el("mprop").onclick=()=>{
+  const l=leadById(state.modalLeadId);
+  const d=l?dealByLead(l.id):null;
+  if(d) state.data.selectedDealId=d.id;
+  save();
+  showModal(false);
+  go("propostas");
+  fillProposal();
+};
+
+// Top binds
+el("apply").onclick=()=>{ state.from=el("from").value; state.to=el("to").value; state.origem=el("origem").value; render(); };
+el("reset").onclick=()=>{ setDates(); el("origem").value="ALL"; state.origem="ALL"; el("qLead").value=""; render(); };
+el("newLead").onclick=createLead;
+el("newLeadTop").onclick=createLead;
+el("qLead").oninput=()=>{ if(state.page==="leads") renderLeads(); };
+
+el("newDeal").onclick=()=>{ createLead(); };
+el("resetPipe").onclick=()=>{
+  state.data.leads.forEach(l=>{
+    if(l.etapa!=="Negócio fechado") l.etapa="Contato feito";
+    l.status = (l.etapa==="Cadastro Ativo") ? "Ativo" : (l.etapa==="Negócio fechado" ? "Fechado" : "Em negociação");
+    l.last = iso(new Date());
+  });
+  state.data.deals.forEach(d=>{
+    const l=leadById(d.leadId);
+    if(!l) return;
+    d.etapa=l.etapa;
+    d.status=l.status;
+    d.last=l.last;
+  });
+  save();
+  render();
+};
+
+el("useSelected").onclick=fillProposal;
+el("calc").onclick=calcProposal;
+
+el("copy").onclick=async()=>{
+  const tmp=document.createElement("div");
+  tmp.innerHTML = el("propOut").innerHTML.replace(/<br>/g,"\n").replace(/<[^>]+>/g,"");
+  const text = tmp.textContent.trim();
+  try{
+    await navigator.clipboard.writeText(text);
+    el("copy").textContent="✅ Copiado";
+    setTimeout(()=>el("copy").textContent="📋 Copiar",1200);
+  }catch(e){
+    alert("Não consegui copiar automaticamente. Copie manualmente.");
+  }
+};
+
+el("exportCsv").onclick=()=>download(`leads_${state.from}_a_${state.to}.csv`, leadsCSV(leadsFiltered()), "text/csv");
+el("addTask").onclick=()=>openTaskModal();
+
+// Rates
+const resetRatesBtn = el("resetRates");
+if(resetRatesBtn) resetRatesBtn.onclick = resetRates;
+
+// Sorting binds
+document.querySelectorAll("#page-home thead th").forEach(th=>{
+  th.onclick=()=>{
+    const k=th.dataset.sort;
+    if(!k) return;
+    if(state.sortKey===k) state.sortDir = state.sortDir==="asc" ? "desc" : "asc";
+    else{
+      state.sortKey=k;
+      state.sortDir=["nome","empresa","origem","etapa","interesse","owner","status","tasks"].includes(k) ? "asc" : "desc";
+    }
+    renderHomeTable();
+  };
+});
+
+document.querySelectorAll("#page-leads thead th").forEach(th=>{
+  th.onclick=()=>{
+    const k=th.dataset.sort2;
+    if(!k) return;
+    if(state.sortKey2===k) state.sortDir2 = state.sortDir2==="asc" ? "desc" : "asc";
+    else{
+      state.sortKey2=k;
+      state.sortDir2=["nome","empresa","fone","origem","interesse","etapa","owner","status","tasks"].includes(k) ? "asc" : "desc";
+    }
+    renderLeads();
+  };
+});
+
+document.querySelectorAll("#page-tarefas thead th").forEach(th=>{
+  th.onclick=()=>{
+    const k=th.dataset.sortt;
+    if(!k) return;
+    if(state.sortTask===k) state.sortTaskDir = state.sortTaskDir==="asc" ? "desc" : "asc";
+    else{
+      state.sortTask=k;
+      state.sortTaskDir=["title","lead","prio","owner"].includes(k) ? "asc" : "desc";
+    }
+    renderTasks();
+  };
+});
+
+// Fix modal: inject tasks container if not exists (keeps HTML untouched if already there)
+(function ensureModalTasks(){
+  const mcard = document.querySelector(".mbody .mcard:last-child");
+  if(!mcard) return;
+  if(el("leadTasks")) return;
+  const h = document.createElement("div");
+  h.style.marginTop="12px";
+  h.innerHTML = `<h4 style="margin:0;font-size:12px;color:rgba(255,255,255,.88)">Tarefas deste lead</h4><div id="leadTasks" style="margin-top:8px"></div>`;
+  mcard.appendChild(h);
+})();
+
+function render(){
+  renderKPIs();
+  if(state.page==="home"){ chart(); nextTasks(); renderHomeTable(); }
+  if(state.page==="leads"){ renderLeads(); }
+  if(state.page==="pipeline"){ renderKanban(); }
+  if(state.page==="tarefas"){ renderTasks(); }
+  if(state.page==="propostas"){ fillProposal(); renderRates(); }
+  renderProductivity();
+
+}
+
+// Init
+setDates();
+el("origem").value="ALL";
+state.origem="ALL";
+render();
+
+</script>
+
+<!-- Task Modal -->
+<div class="modal" id="taskModal" style="display:none">
+  <div class="modalBox" style="max-width:720px">
+    <div class="modalHead">
+      <div>
+        <h3 style="margin:0">Nova tarefa</h3>
+        <div class="meta">Crie uma tarefa com data personalizada e vincule a um lead.</div>
+      </div>
+      <button class="btn ghost" id="taskClose">✕ Fechar</button>
+    </div>
+    <div class="modalBody">
+      <div class="grid2">
+        <div class="field"><label>Lead</label><select id="tLead"></select></div>
+        <div class="field"><label>Owner</label><select id="tOwner"></select></div>
+        <div class="field"><label>Título</label><input id="tTitle" placeholder="Ex: Enviar proposta"></div>
+        <div class="field"><label>Vencimento</label><input id="tDue" type="date"></div>
+        <div class="field"><label>Prioridade</label>
+          <select id="tPrio"><option>Baixa</option><option selected>Média</option><option>Alta</option></select>
+        </div>
+      </div>
+      <div class="rowbtn" style="margin-top:12px">
+        <button class="btn" id="tSave">✅ Criar tarefa</button>
+        <button class="btn ghost" id="tCancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
