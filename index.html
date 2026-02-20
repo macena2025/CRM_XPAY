@@ -192,7 +192,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
   <section class="page" id="page-propostas">
     <div class="card section">
       <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
-        <div><h2>Simulador de proposta</h2><div class="meta"></div></div>
+        <div><h2>Simulador de proposta</h2><div class="meta">Modelo (mock) para adquirência/maquininha. </div></div>
         <div><button class="btn ghost" id="useSelected">↳ Usar negócio selecionado</button></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
@@ -200,9 +200,9 @@ tr:hover td{background:rgba(255,255,255,.03)}
           <h2>Cliente</h2>
           <div class="kv">
             <div class="field"><label>Empresa</label><input id="pEmpresa" placeholder="Mercado Bom Preço"></div>
-            <div class="field"><label>CNPJ</label><input id="pTPV" type="number" placeholder="60000"></div>
+            <div class="field"><label>TPV mensal (USD)</label><input id="pTPV" type="number" placeholder="60000"></div>
             <div class="field"><label>Segmento</label><select id="pSeg"><option>Varejo</option><option>Alimentacao</option><option>Serviços</option><option>Farmácia</option><option>Franquias</option><option>Outros</option></select></div>
-            <div class="field"><label>TPV MENSAL (R$)</label><input id="pQtd" type="number" value="1" min="1"></div>
+            <div class="field"><label>Qtd maquininhas</label><input id="pQtd" type="number" value="1" min="1"></div>
           </div>
         </div>
         <div class="card">
@@ -221,7 +221,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
         <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
           <div>
             <h2>Tabela de taxas (presencial e e-commerce)</h2>
-            <div class="meta"> </div>
+            <div class="meta">Preencha por bandeira: débito, crédito à vista, faixas de parcelas, antecipação (automática/eventual). Inclui PIX. Salva automaticamente.</div>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn ghost" id="resetRates">↩︎ Reset taxas</button>
@@ -474,7 +474,7 @@ const pageMeta={
   home:["Visão geral","CRM focado em captação de leads e venda de maquininha/adquirência."],
   leads:["Leads","Base de leads com busca e detalhes."],
   pipeline:["Pipeline","Kanban de negócios para acompanhar etapas."],
-  propostas:["Propostas",
+  propostas:["Propostas","Simulador de taxas e tabela completa por bandeira (mock)."],
   tarefas:["Tarefas","Follow-ups e atividades."]
 };
 
