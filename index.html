@@ -76,7 +76,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
 
 <div class="app">
 <aside class="side">
-  <div class="brand"><div class="logo"></div><div class="txt"><b>CRM Adquirência</b><small>Demo local (mock)</small></div></div>
+  <div class="brand"><div class="logo"></div><div class="txt"><b>CRM Adquirência</b><small></small></div></div>
   <nav class="nav">
     <button class="active" data-page="home"><div class="left"><div class="ico">📊</div><span>Visão geral</span></div><span class="pill" id="pillPeriod">—</span></button>
     <button data-page="leads"><div class="left"><div class="ico">🧲</div><span>Leads</span></div><span class="pill" id="pillLeads">—</span></button>
@@ -84,7 +84,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
     <button data-page="propostas"><div class="left"><div class="ico">🧾</div><span>Propostas</span></div><span class="pill">Taxas</span></button>
     <button data-page="tarefas"><div class="left"><div class="ico">✅</div><span>Tarefas</span></div><span class="pill" id="pillTasks">—</span></button>
 </nav>
-  <div class="box"><b>Como usar</b><p>1) Crie um lead.<br/>2) Arraste no pipeline.<br/>3) Abra um negócio para simular proposta.</p></div>
+  <div class="box"><b></b><p>1)<br/>2)<br/>3)</p></div>
 </aside>
 
 <main class="main">
@@ -105,12 +105,12 @@ tr:hover td{background:rgba(255,255,255,.03)}
       <div class="card kpi"><h3>Leads no período</h3><div class="v" id="kpiLeads">—</div><div style="margin-top:8px"><span class="badge" id="kpiDelta">—</span> <span style="color:var(--m);font-size:12px">vs anterior</span></div></div>
       <div class="card kpi"><h3>Negócios abertos</h3><div class="v" id="kpiDeals">—</div><div style="margin-top:8px"><span class="badge warn" id="kpiStalled">—</span> <span style="color:var(--m);font-size:12px">sem avanço 7d</span></div></div>
       <div class="card kpi"><h3>Conversão</h3><div class="v" id="kpiConv">—</div><div style="margin-top:8px"><span class="badge good" id="kpiWon">—</span> <span style="color:var(--m);font-size:12px">fechados</span></div></div>
-      <div class="card kpi"><h3>Receita estimada (mock)</h3><div class="v" id="kpiRev">—</div><div style="margin-top:8px"><span class="badge" id="kpiRevInfo">Fechados</span> <span style="color:var(--m);font-size:12px">mês</span></div></div>
+      <div class="card kpi"><h3>Receita estimada ()</h3><div class="v" id="kpiRev">—</div><div style="margin-top:8px"><span class="badge" id="kpiRevInfo">Fechados</span> <span style="color:var(--m);font-size:12px">mês</span></div></div>
     </div>
 
     <div class="grid">
       <div class="card section">
-        <h2>Leads por dia</h2><div class="meta">Gráfico simples (mock). Alimenta ao criar leads.</div>
+        <h2>Leads por dia</h2><div class="meta">Gráfico simples (). Alimenta ao criar leads.</div>
         <div style="margin-top:10px"><svg id="chart" viewBox="0 0 900 260"></svg></div>
       </div>
       <div class="card section">
@@ -122,7 +122,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
       <div class="panel-head">
         <div>
           <h2>Produtividade & SLA</h2>
-          <div class="meta">Indicadores de tarefas e SLA (mock) por owner. Vencidos aparecem em destaque.</div>
+          <div class="meta">Indicadores de tarefas e SLA () por owner. Vencidos aparecem em destaque.</div>
         </div>
       </div>
       <div class="kpis" style="margin-top:12px">
@@ -192,7 +192,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
   <section class="page" id="page-propostas">
     <div class="card section">
       <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
-        <div><h2>Simulador de proposta</h2><div class="meta">Modelo (mock) para adquirência/maquininha. Em produção, você pluga sua tabela real.</div></div>
+        <div><h2>Simulador de proposta</h2><div class="meta">Modelo () para adquirência/maquininha. Em produção, você pluga sua tabela real.</div></div>
         <div><button class="btn ghost" id="useSelected">↳ Usar negócio selecionado</button></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
@@ -200,15 +200,15 @@ tr:hover td{background:rgba(255,255,255,.03)}
           <h2>Cliente</h2>
           <div class="kv">
             <div class="field"><label>Empresa</label><input id="pEmpresa" placeholder="Mercado Bom Preço"></div>
-            <div class="field"><label>TPV mensal (USD)</label><input id="pTPV" type="number" placeholder="60000"></div>
-            <div class="field"><label>Segmento</label><select id="pSeg"><option>Varejo</option><option>Restaurante</option><option>Serviços</option><option>Farmácia</option><option>Auto</option></select></div>
-            <div class="field"><label>Qtd maquininhas</label><input id="pQtd" type="number" value="1" min="1"></div>
+            <div class="field"><label>CNPJ</label><input id="pTPV" type="number" placeholder="60000"></div>
+            <div class="field"><label>Segmento</label><select id="pSeg"><option>Varejo</option><option>Fast Food</option><option>Serviços</option><option>Farmácia</option><option>Franquias</option></select></div>
+            <div class="field"><label>TPV MENSAL (R$)</label><input id="pQtd" type="number" value="1" min="1"></div>
           </div>
         </div>
         <div class="card">
-          <h2>Taxas e serviços</h2>
+          <h2>SHARE BANDEIRAS</h2>
           <div class="kv">
-            <div class="field"><label>Débito (%)</label><input id="pDeb" type="number" step="0.01" value="1.39"></div>
+            <div class="field"><label>Debito (%)</label><input id="pDeb" type="number" step="0.01" value="1.39"></div>
             <div class="field"><label>Crédito à vista (%)</label><input id="pCred" type="number" step="0.01" value="2.79"></div>
             <div class="field"><label>Crédito parcelado (%)</label><input id="pParc" type="number" step="0.01" value="3.49"></div>
             <div class="field"><label>Aluguel por máquina (USD/mês)</label><input id="pAlug" type="number" step="1" value="25"></div>
@@ -266,8 +266,8 @@ tr:hover td{background:rgba(255,255,255,.03)}
       </div>
 
       <div class="card section" style="margin-top:12px">
-        <h2>Resultado</h2><div class="meta">Estimativa mensal (mock).</div>
-        <div id="propOut" style="margin-top:10px;color:var(--m);font-size:13px;line-height:1.55">Preencha e clique em “Calcular”.</div>
+        <h2>Resultado</h2><div class="meta">.</div>
+        <div id="propOut" style="margin-top:10px;color:var(--m);font-size:13px;line-height:1.55">.</div>
       </div>
     </div>
   </section>
@@ -393,7 +393,7 @@ function seed(){
       owner: pick(OWN),
       status: etapa==="Cadastro Ativo" ? "Ativo" : "Em negociação",
       last: iso(addDays(created,Math.floor(rand(0,14)))),
-      notes:[{id:"N"+uid(),at: iso(addDays(created,1)), text:"Lead captado e pré-qualificado (mock)."}]
+      notes:[{id:"N"+uid(),at: iso(addDays(created,1)), text:"Lead captado e pré-qualificado ()."}]
     });
   }
 
@@ -471,10 +471,10 @@ const state = {
 };
 
 const pageMeta={
-  home:["Visão geral","CRM focado em captação de leads e venda de maquininha/adquirência."],
+  home:["Visão geral",
   leads:["Leads","Base de leads com busca e detalhes."],
   pipeline:["Pipeline","Kanban de negócios para acompanhar etapas."],
-  propostas:["Propostas","Simulador de taxas e tabela completa por bandeira (mock)."],
+  propostas:["Propostas","Simulador de taxas e tabela completa por bandeira ()."],
   tarefas:["Tarefas","Follow-ups e atividades."]
 };
 
@@ -1026,7 +1026,7 @@ function calcProposal(){
 
   el("propOut").innerHTML = `<b>${emp}</b><br><br>
     TPV mensal: <b>${fmtUSD.format(tpv)}</b><br>
-    Mix (mock): Débito ${(mixDeb*100).toFixed(0)}% • Crédito ${(mixCred*100).toFixed(0)}% • Parcelado ${(mixParc*100).toFixed(0)}%<br><br>
+    Mix (): Débito ${(mixDeb*100).toFixed(0)}% • Crédito ${(mixCred*100).toFixed(0)}% • Parcelado ${(mixParc*100).toFixed(0)}%<br><br>
     Taxas: Débito <b>${(deb*100).toFixed(2)}%</b> • Crédito <b>${(cred*100).toFixed(2)}%</b> • Parcelado <b>${(parc*100).toFixed(2)}%</b><br>
     Serviços: <b>${qtd}</b> máquina(s) • Aluguel <b>${fmtUSD.format(alug)}</b>/mês cada<br><br>
     Receita estimada (mês): <b>${fmtUSD.format(total)}</b><br>
