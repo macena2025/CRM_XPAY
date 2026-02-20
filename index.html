@@ -76,7 +76,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
 
 <div class="app">
 <aside class="side">
-  <div class="brand"><div class="logo"></div><div class="txt"><b>CRM Adquirência</b><small>Demo local (mock)</small></div></div>
+  <div class="brand"><div class="logo"></div><div class="txt"><b>CRM Adquirência</b><small></small></div></div>
   <nav class="nav">
     <button class="active" data-page="home"><div class="left"><div class="ico">📊</div><span>Visão geral</span></div><span class="pill" id="pillPeriod">—</span></button>
     <button data-page="leads"><div class="left"><div class="ico">🧲</div><span>Leads</span></div><span class="pill" id="pillLeads">—</span></button>
@@ -84,12 +84,12 @@ tr:hover td{background:rgba(255,255,255,.03)}
     <button data-page="propostas"><div class="left"><div class="ico">🧾</div><span>Propostas</span></div><span class="pill">Taxas</span></button>
     <button data-page="tarefas"><div class="left"><div class="ico">✅</div><span>Tarefas</span></div><span class="pill" id="pillTasks">—</span></button>
 </nav>
-  <div class="box"><b>Como usar</b><p>1) Crie um lead.<br/>2) Arraste no pipeline.<br/>3) Abra um negócio para simular proposta.</p></div>
+  <div class="box"><b></b><p>1)<br/>2)<br/>3)</p></div>
 </aside>
 
 <main class="main">
   <div class="top">
-    <div class="title"><h1 id="pageTitle">Visão geral</h1><p id="pageDesc">CRM focado em captação de leads e venda de maquininha/adquirência.</p></div>
+    <div class="title"><h1 id="pageTitle">Visão geral</h1><p id="pageDesc"></p></div>
     <div class="tools">
       <div class="ctrl"><label>De</label><input id="from" type="date"></div>
       <div class="ctrl"><label>Até</label><input id="to" type="date"></div>
@@ -122,7 +122,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
       <div class="panel-head">
         <div>
           <h2>Produtividade & SLA</h2>
-          <div class="meta">Indicadores de tarefas e SLA (mock) por owner. Vencidos aparecem em destaque.</div>
+          <div class="meta">Indicadores de tarefas e SLA </div>
         </div>
       </div>
       <div class="kpis" style="margin-top:12px">
@@ -192,7 +192,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
   <section class="page" id="page-propostas">
     <div class="card section">
       <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
-        <div><h2>Simulador de proposta</h2><div class="meta">Modelo (mock) para adquirência/maquininha. Em produção, você pluga sua tabela real.</div></div>
+        <div><h2>Simulador de proposta</h2><div class="meta">Modelo (mock) para adquirência/maquininha. </div></div>
         <div><button class="btn ghost" id="useSelected">↳ Usar negócio selecionado</button></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
@@ -201,7 +201,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
           <div class="kv">
             <div class="field"><label>Empresa</label><input id="pEmpresa" placeholder="Mercado Bom Preço"></div>
             <div class="field"><label>TPV mensal (USD)</label><input id="pTPV" type="number" placeholder="60000"></div>
-            <div class="field"><label>Segmento</label><select id="pSeg"><option>Varejo</option><option>Restaurante</option><option>Serviços</option><option>Farmácia</option><option>Auto</option></select></div>
+            <div class="field"><label>Segmento</label><select id="pSeg"><option>Varejo</option><option>Alimentacao</option><option>Serviços</option><option>Farmácia</option><option>Franquias</option><option>Outros</option></select></div>
             <div class="field"><label>Qtd maquininhas</label><input id="pQtd" type="number" value="1" min="1"></div>
           </div>
         </div>
