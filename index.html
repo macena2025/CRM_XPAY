@@ -122,7 +122,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
       <div class="panel-head">
         <div>
           <h2>Produtividade & SLA</h2>
-          <div class="meta">Indicadores de tarefas e SLA (mock) por owner. Vencidos aparecem em destaque.</div>
+          <div class="meta">Indicadores de tarefas e SLA por Responsavel. </div>
         </div>
       </div>
       <div class="kpis" style="margin-top:12px">
@@ -134,7 +134,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
       </div>
       <div class="table" style="margin-top:10px">
         <table>
-          <thead><tr><th>Owner</th><th>Criadas</th><th>Concluídas</th><th>Vencidas</th><th>SLA %</th></tr></thead>
+          <thead><tr><th>Responsavel</th><th>Criadas</th><th>Concluídas</th><th>Vencidas</th><th>SLA %</th></tr></thead>
           <tbody id="tbodyOwners"></tbody>
         </table>
       </div>
@@ -179,20 +179,20 @@ tr:hover td{background:rgba(255,255,255,.03)}
   <section class="page" id="page-pipeline">
     <div class="card section">
       <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
-        <div><h2>Pipeline</h2><div class="meta">Arraste os negócios entre etapas. Clique para abrir.</div></div>
+        <div><h2>Pipeline</h2><div class="meta">. </div></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn ghost" id="newDeal">➕ Novo negócio</button>
           <button class="btn ghost" id="resetPipe">↩︎ Reset pipeline</button>
         </div>
       </div>
-      <div class="kanban" id="kanban" style="margin-top:10px"></div>
+      <div class="kanban" id="XPAY" style="margin-top:10px"></div>
     </div>
   </section>
 
   <section class="page" id="page-propostas">
     <div class="card section">
       <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
-        <div><h2>Simulador de proposta</h2><div class="meta">Modelo (mock) para adquirência/maquininha. Em produção, você pluga sua tabela real.</div></div>
+        <div><h2>Simulador de proposta</h2><div class="meta"> adquirência/maquininha.</div></div>
         <div><button class="btn ghost" id="useSelected">↳ Usar negócio selecionado</button></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
@@ -221,7 +221,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
         <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
           <div>
             <h2>Tabela de taxas (presencial e e-commerce)</h2>
-            <div class="meta">Preencha por bandeira: débito, crédito à vista, faixas de parcelas, antecipação (automática/eventual). Inclui PIX. Salva automaticamente.</div>
+            <div class="meta">.</div>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn ghost" id="resetRates">↩︎ Reset taxas</button>
@@ -305,7 +305,7 @@ tr:hover td{background:rgba(255,255,255,.03)}
           <div class="field"><label>Interesse</label><select id="mInt"><option>Maquininha</option><option>Adquirência</option><option>PIX</option><option>Link de pagamento</option><option>Split</option><option>Antecipação</option><option>Conta digital</option></select></div>
           <div class="field"><label>TPV (USD/mês)</label><input id="mTPV" type="number"></div>
           <div class="field"><label>Etapa</label><select id="mEt"></select></div>
-          <div class="field"><label>Owner</label><select id="mOwn"><option>Inside • 01</option><option>Inside • 02</option><option>Field • 01</option><option>Field • 02</option></select></div>
+          <div class="field"><label>Responsavel</label><select id="mOwn"><option>Allan Girardi</option><option>Mauricio Salkini</option><option>Anderson Macena</option><option>Comercial</option></select></div>
           <div class="field"><label>Status</label><select id="mSt"><option>Ativo</option><option>Em negociação</option><option>Fechado</option><option>Perdido</option></select></div>
         </div>
         <div class="rowbtn">
@@ -339,10 +339,10 @@ tr:hover td{background:rgba(255,255,255,.03)}
 
 const fmtUSD = new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"});
 const PIPE = ["Cadastro Ativo","Contato feito","Proposta enviada","Em negociação","Negócio fechado"];
-const ORIG = ["WhatsApp","Indicação","Form site","Instagram","Inside sales"];
-const INT  = ["Maquininha","Adquirência","PIX","Link de pagamento","Split","Antecipação","Conta digital"];
-const OWN  = ["Inside • 01","Inside • 02","Field • 01","Field • 02"];
-const LS   = "crm_adquirencia_demo_stable_v5";
+const ORIG = ["WhatsApp","Indicação","Form site","Instagram","Contato Ativo"];
+const INT  = ["Maquininha/Link","integracao","Split","white label","Conta digital"];
+const OWN  = ["Allan Girardi","Mauricio Salkini","Anderson Macena","Comercial"];
+const LS   = "crm_adquirencia";
 
 const iso = d => d.toISOString().slice(0,10);
 const addDays = (d,n)=>{const x=new Date(d); x.setDate(x.getDate()+n); return x;};
@@ -471,10 +471,10 @@ const state = {
 };
 
 const pageMeta={
-  home:["Visão geral","CRM focado em captação de leads e venda de maquininha/adquirência."],
+  home:["Visão geral",""],
   leads:["Leads","Base de leads com busca e detalhes."],
   pipeline:["Pipeline","Kanban de negócios para acompanhar etapas."],
-  propostas:["Propostas","Simulador de taxas e tabela completa por bandeira (mock)."],
+  propostas:["Propostas","Simulador de taxas e tabela completa por bandeira."],
   tarefas:["Tarefas","Follow-ups e atividades."]
 };
 
@@ -493,7 +493,7 @@ function save(){
   try{ localStorage.setItem(LS,JSON.stringify(state.data)); }
   catch(e){
     console.error(e);
-    alert("⚠️ O armazenamento local do navegador está cheio. Clique em Reset (ou limpe o localStorage) e tente novamente.");
+    alert("⚠️ O armazenamento local do navegador está cheio.");
   }
 }
 
@@ -970,7 +970,7 @@ function renderProductivity(){
   el("kpiSla").textContent = sla + "%";
   el("kpiAvgDone").textContent = avgDays;
 
-  // Owner leaderboard
+  // Responsavel leaderboard
   const owners = {};
   tasks.forEach(t=>{
     const o = t.owner || "—";
@@ -1054,7 +1054,7 @@ function download(name,text,type="text/plain"){
 }
 
 function leadsCSV(arr){
-  const h=["id","created","nome","empresa","fone","origem","interesse","tpv","etapa","owner","status","last"];
+  const h=["id","created","nome","empresa","fone","origem","interesse","tpv","etapa","Responsavel","status","last"];
   const lines=[h.join(",")];
   arr.forEach(l=>{
     lines.push([
@@ -1076,15 +1076,15 @@ function createLead(){
     created: iso(now),
     nome:"Novo Lead",
     empresa:"Empresa",
-    fone:"+1 ___-___-____",
+    fone:"(__) _____-____",
     origem: state.origem==="ALL" ? "WhatsApp" : state.origem,
     interesse:"Maquininha",
     tpv: 30000,
     etapa:"Cadastro Ativo",
-    owner:"Inside • 01",
+    owner:"Allan Girardi",
     status:"Ativo",
     last: iso(now),
-    notes:[{id:"N"+uid(),at: iso(now), text:"Lead criado (demo)."}]
+    notes:[{id:"N"+uid(),at: iso(now), text:"Lead criado."}]
   };
 
   state.data.leads.unshift(lead);
@@ -1116,7 +1116,7 @@ function createLead(){
 function addTask(leadId, title="Follow-up do lead", due=null, prio="Média", owner=null){
   const l=leadById(leadId);
   const d = dealByLead(leadId);
-  const o = owner || (d && d.owner) || (l && l.owner) || "Inside • 01";
+  const o = owner || (d && d.owner) || (l && l.owner) || "Allan Girardi";
   const dd = due || iso(addDays(new Date(),1));
   state.data.tasks.push({
     id:"T"+uid(),
